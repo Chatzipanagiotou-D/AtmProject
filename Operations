@@ -1,0 +1,233 @@
+package com.bankatmsystem.mitsos;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
+
+import com.bankatmsystem.mitsos.CustomersBase.moneySort;
+
+public class Operations  {
+	private String d ;
+	private static CustomersBase access ; 
+	private static AtmOperations access1;
+	 final int l ;
+
+	private ArrayList<CustomersBase> custList ;
+	public Set<CustomersBase> customers1;   //new option
+	  
+	
+
+	
+	public Operations(String d) {
+		this.d = d;
+		this.custList = new ArrayList<>();
+		l= 0 ;
+		this.customers1 = new HashSet<>();
+		
+	}
+
+
+	
+	public void addCustomer(int uniqueId, String name , String surName, String dOb , int field1 , double moneyHere, int pass) {
+		if ( custList.size() == 0) {
+		CustomersBase currCust = new CustomersBase(uniqueId, name, surName, dOb, field1, new AtmOperations(moneyHere, pass));
+		custList.add(currCust);
+		}
+		else if (checkDublicateId(uniqueId) == false) {
+			CustomersBase currCust = new CustomersBase(uniqueId, name, surName, dOb, field1, new AtmOperations(moneyHere, pass));
+			custList.add(currCust);
+			} else {
+			System.out.println("Same id already exists in the base try another id .");
+		}
+		
+		//above here testings with Set data structure
+		CustomersBase currCust = new CustomersBase(uniqueId, name, surName, dOb, field1, new AtmOperations(moneyHere, pass));
+		customers1.add(currCust);
+		
+	
+	}
+	
+	
+	public void testSet() {
+		for ( CustomersBase var : customers1) {
+			System.out.println(var.toString());
+		//	if (var.getName().equals(s)){
+			//	System.out.println(var.toString());
+		//	}
+		}
+	}
+	
+	public void testSet1(String x) {
+		for(CustomersBase var : customers1) {
+			if (x.equals(var.getName())){
+				CustomersBase currently  = var;
+				System.out.println("vrethike kai einai  " + currently.toString());
+				
+			} else {
+				System.out.println("den yparxei... ");
+			}
+			
+			
+		}
+	}
+	
+	
+
+	
+	
+	
+	private boolean checkDublicateId(int getIdHere) {         					//to check and avoid duplicate customer with the same Id
+		for (CustomersBase l : custList) {
+			int c = l.getUniqueId();
+			if ( getIdHere ==  c) {
+			return true;
+			}
+		}
+		return false;
+	}
+		
+
+	
+	public void customerList() {
+		for (int i=0; i<custList.size(); i++ ) {
+			System.out.println(custList.get(i).toString() + " "  + custList.get(i).getE().toString()) ;
+		}
+		
+		System.out.println("====================================================================================================");
+		/*
+		List<CustomersBase> anotherList = new ArrayList<CustomersBase>(getCustList());
+		//CustomersBase x = new CustomersBase(888, "name", "surName", "dOb", 0, new AtmOperations( 10, 444) );
+		Collections.sort(anotherList,  access.getGetTheMoneySort());   //for now changes criteria parameterized from CustomersBase class.
+		
+		for ( int l=0; l<anotherList.size(); l++) {
+			System.out.println(anotherList.get(l).toString() + " " + anotherList.get(l).getE().toString());
+		}*/
+	}
+
+
+
+	public List<CustomersBase> getCustList() {
+		return new ArrayList<CustomersBase>(custList);        // return new because of immutable class 
+	}
+	
+	
+	
+	public void editCustomer(int UniqueId ) {								// editing a customer can achieved only by Unique id because of dublicate (same names , surnames etc)
+		ArrayList<CustomersBase> currentChangesList = new ArrayList<>();
+		for( int i=0; i<custList.size(); i++) { 
+			if ( custList.get(i).getUniqueId() ==  (UniqueId)){
+				  int currentUniqueId = custList.get(i).getUniqueId();
+				  
+				currentChangesList.add(custList.get(i));																			//save object from official list
+				CustomersBase c = new CustomersBase(currentUniqueId,"ntoykos","ntoykatos","77/7/7",0, new AtmOperations(780,11111)); //ensure current id don't change by editing
+				currentChangesList.set(0, c);   																					// save edited object
+				
+				for (int l=0; l<custList.size(); l++ ) {
+					for (int d=0; d<currentChangesList.size(); d++) {
+					if ( currentChangesList.get(d).getUniqueId() == custList.get(l).getUniqueId()) {
+						custList.set(l, c);
+						}
+					}
+				}
+			}
+			
+			System.out.println("This id doesn't exist");
+		}
+
+	}
+	
+	
+	public void findCustomer(String surName) {
+		for (CustomersBase t: custList) {
+			if (surName.equalsIgnoreCase(t.getSurName())) {
+			System.out.println(t + " UniqueId ->" +  t.getUniqueId());
+			}
+		}	
+	}
+
+	
+	
+	public void findCustomer1(String surNameAndname) {
+			String[] x = surNameAndname.split(" " ,2 );
+			//System.out.println(x[0]);
+			//System.out.println(x[1]);
+			for (CustomersBase t: custList) {
+				if( (x[0].equalsIgnoreCase(t.getName())) || x[1].equalsIgnoreCase(t.getSurName()) ) {
+					System.out.println(t.toString());
+				}
+			}
+	}
+	
+
+
+	
+	
+	public void deposit(int getUniqueIdHere, double amount) {
+
+		for (int i=0; i<custList.size(); i++) {
+			if ( custList.get(i).getUniqueId()  == getUniqueIdHere) {
+				CustomersBase s  = custList.get(i); 
+				s.getE().addMoney(amount);          //getE  to access in AtmOperation Class
+				break;
+			}
+		}
+	}
+	
+	
+	
+	public void enterPass(int getUniqueIdHere , int enterPass) {
+		for (int i=0; i<custList.size(); i++) {
+			if ( custList.get(i).getUniqueId()  == getUniqueIdHere) {
+				CustomersBase s  = custList.get(i);
+				s.getE().validationPass(enterPass);
+				
+		
+			}
+		}
+	}
+		
+	
+	
+	
+	
+	public void withdrawl(int getUniqueIdHere , double amount) {
+		double negativeAmount = amount;
+		
+		for (int i=0; i<custList.size(); i++) {
+			if ( custList.get(i).getUniqueId()  == getUniqueIdHere) {
+				CustomersBase s  = custList.get(i); 
+				s.getE().removeMoney(negativeAmount);
+			}
+		
+		}
+	}
+	
+	
+	public void takeWallet(int getUniqueIdHere ) {
+		
+		
+		for (int i=0; i<custList.size(); i++) {
+			if ( custList.get(i).getUniqueId()  == getUniqueIdHere) {
+				CustomersBase s  = custList.get(i); 
+				s.getE().takeWallet();
+			}
+		
+		}
+	}
+	
+	
+	
+	
+
+	} 
+	
+	
+	
+	
+	
