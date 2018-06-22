@@ -23,7 +23,7 @@ public class Main {
 									//left parameter is Id , right parameter is pass.
 		
 		f.withdrawl(16850, 1000); // against left enter id , right the amount
-		f.customerList();         // just a customer list
+		f.customerList();         // just the customers list
 		f.takeWallet(16850);      //info wallet of a specific customer
 		
 		
