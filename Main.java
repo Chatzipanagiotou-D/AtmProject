@@ -12,7 +12,21 @@ public class Main {
 		f.addCustomer(168540, "MELLISA", "BATTURO", "02/05/1990", 0, 5000, 1214);
 		f.addCustomer(168501, "JOAN", "ANTONIOU", "05/12/1990", 0, 7788, 9568);
 		
+		
+		
+		
+		
+		
 		System.out.println();
+		
+		f.enterPass(16850, 10215);  //first step for now is to enter with Id and Password to change boolean true , to do withdrawal and deposits
+									//left parameter is Id , right parameter is pass.
+		
+		f.withdrawl(16850, 1000); // against left enter id , right the amount
+		f.customerList();         // just a customer list
+		f.takeWallet(16850);      //info wallet of a specific customer
+		
+		
 		
     
 	}
