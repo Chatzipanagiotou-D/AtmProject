@@ -1,0 +1,134 @@
+package com.bankatmsystem.mitsos;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+
+import proxeiro.proxeiro.mitsou.Note1;
+import proxeiro.proxeiro.mitsou.Object;
+import proxeiro.proxeiro.mitsou.Override;
+import proxeiro.proxeiro.mitsou.String;
+
+
+  class CustomersBase implements Comparable<CustomersBase> {
+	
+	private int uniqueId;
+	private String name;
+	private String surName;
+	private String dOb;                 //date of birth
+	private int field1;
+	private AtmOperations e;
+	private static moneySort getTheMoneySort;   //with this field change the sort criterias.
+
+	
+	public CustomersBase(int uniqueId, String name, String surName, String dOb, int field1 , AtmOperations e) {
+		this.uniqueId = uniqueId;
+		this.name = name;
+		this.surName = surName;
+		this.dOb = dOb;
+		this.field1 = field1;
+		this.e = e; 
+		
+	}
+
+
+	public int getUniqueId() {
+		return uniqueId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getSurName() {
+		return surName;
+	}
+
+	public String getdOb() {
+		return dOb;
+	}
+
+	public int getField1() {
+		return field1;
+	}
+
+	public AtmOperations getE() {
+		return e;
+	}
+	
+	static public surNameSort getGetTheMoneySort() { //to access in static sort methods (invisibility) do not use class names.
+		return new  CustomersBase.surNameSort();		//change method name and return parameter to change the sort criteria.
+		
+	}
+
+
+
+	@Override
+	public String toString() {
+		
+		return "CustomerName " +  this.getName() + " SurName " + this.surName   + " Date Of Birth " + this.dOb;
+	}
+
+
+	
+	
+	
+	//sorted criteria classe's here . 
+	
+	public static class moneySort implements Comparator<CustomersBase>{
+
+		@Override																//sorted criteria by moneyBank
+		public int compare(CustomersBase o1, CustomersBase o2) {
+			if (o1.getE().getMoneyHere() == o2.getE().getMoneyHere())  {
+				return 0;
+				}
+			else if ( o1.getE().getMoneyHere() > o2.getE().getMoneyHere() ) 
+				return 1;
+				else return -1;
+			} 
+		}
+	
+	public static class surNameSort implements Comparator<CustomersBase>{
+
+		@Override																//sorted by surName
+		public int compare(CustomersBase o1, CustomersBase o2) {
+			return o1.getSurName().compareToIgnoreCase(o2.getSurName());
+			
+		}
+		
+	}
+	
+	
+	
+	//HERE we achieved unique objects of customers and test equal and hashcode methods.
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (( obj == null) || (obj.getClass() != this.getClass())  ) {
+			return false;
+		}
+		
+		int objName = ((CustomersBase) obj).getUniqueId();
+		return this.uniqueId==(objName);
+		
+	}
+	
+	@Override
+	public int hashCode() {
+		//Integer f;
+		//f = this.uniqueId;
+		int f = System.identityHashCode(uniqueId);
+		System.out.println("hasshcode -------------------------------------------------------->          " + f);
+		//return f.hashCode();
+		return 0;
+		
+	}
+	
+	//end with achived unique objects
+	
+
+		
+	}
+	
