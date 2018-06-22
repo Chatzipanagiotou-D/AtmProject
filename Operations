@@ -125,7 +125,7 @@ public class Operations  {
 				  int currentUniqueId = custList.get(i).getUniqueId();
 				  
 				currentChangesList.add(custList.get(i));																			//save object from official list
-				CustomersBase c = new CustomersBase(currentUniqueId,"ntoykos","ntoykatos","77/7/7",0, new AtmOperations(780,11111)); //ensure current id don't change by editing
+				CustomersBase c = new CustomersBase(currentUniqueId,"Nick","Test","19/7/1995",0, new AtmOperations(780,11111)); //ensure current id don't change by editing
 				currentChangesList.set(0, c);   																					// save edited object
 				
 				for (int l=0; l<custList.size(); l++ ) {
